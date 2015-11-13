@@ -1,9 +1,19 @@
 " My .vimrc. As I'm just getting started with vim I expect this will undergo frequent changes.
-
-
+set nocompatible "Required for Vundle.
+" Vundle Configuration {{{
+filetype off
+" Include vundle in the runtime path.
+set rtp+=~/.vim/bundle/Vundle.vim
+"Begin Vundle configuration.
+call vundle#begin()
+" Vundle needs to manage itself.
+Plugin 'VundleVim/Vundle.vim'
+"End vundle configuration.
+call vundle#end()
+" }}}
 " Basic Settings {{{
-set nocompatible " Not needed, but why not make it explicit.
 set number " Display line numbers.
+filetype plugin indent on "Required for Vundle.
 syntax enable " Enable syntax highlighting.
 autocmd BufRead,BufNewFile * startinsert " When opening a file, start in insertmode.
 startinsert " When opening vim, start in insertmode
@@ -18,7 +28,6 @@ set expandtab " Make tabs into spaces.
 " UI settings, searching, loading of indent files {{{
 set showcmd " Show the last command.
 set cursorline " Highlight the current line.
-filetype indent on " Load filetype-specific indent files.
 set wildmenu " Visual autocompletion for the command menu.
 set showmatch " Highlight matching brackets and braces.
 set incsearch " Search incrementally.
