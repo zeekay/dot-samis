@@ -1,5 +1,6 @@
 " My .vimrc. As I'm just getting started with vim I expect this will undergo frequent changes.
 set nocompatible "Required for Vundle.
+let g:cua_mode = 3 "Enable all of the keybindings provided by cua-mode.vim
 " Vundle Configuration {{{
 filetype off
 " Include vundle in the runtime path.
@@ -8,7 +9,10 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " Vundle needs to manage itself.
 Plugin 'VundleVim/Vundle.vim'
+" A nice colourscheme that I use.
 Plugin 'tomasr/molokai'
+" Provides CUA-style keybindings for vim.
+Plugin 'fabi1cazenave/cua-mode.vim'
 "End vundle configuration.
 call vundle#end()
 " }}}
@@ -40,7 +44,8 @@ noremap <F2> <C-O>:nohlsearch<CR>
 " }}}
 " Folding Settings {{{
 set foldenable " Enable folding.
-set foldmethod=indent " Fold using the indentation level.
+set foldmethod=syntax " Fold by syntax.
+set foldlevelstart=5 " Open 5 fold levels by default.
 " Make folds easier to use by binding the commands to F9.
 inoremap <F9> <C-O>za
 nnoremap <F9> za
@@ -48,11 +53,14 @@ onoremap <F9> <C-C>za
 vnoremap <F9> zf
 
 " }}}
-" Per-filetype configuration settings {{{
-" A group of helpful per-language configuration settings.
+" Autocmds {{{
+" A group of helpful per-language configuration settings & rebinding a key.
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
+    if has('gui_running')
+            autocmd VimEnter * inoremap <C-F> <C-O>:promptrepl<CR>
+    endif
     autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
                 \:call <SID>StripTrailingWhitespaces()
     autocmd FileType java setlocal noexpandtab
@@ -87,5 +95,4 @@ set writebackup
 " Enable modelines for per-file configuration.
 set modeline
 set modelines=5
-
 " vim:foldmethod=marker:foldlevel=0
