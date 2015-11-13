@@ -8,6 +8,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " Vundle needs to manage itself.
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'tomasr/molokai'
 "End vundle configuration.
 call vundle#end()
 " }}}
@@ -15,6 +16,8 @@ call vundle#end()
 set number " Display line numbers.
 filetype plugin indent on "Required for Vundle.
 syntax enable " Enable syntax highlighting.
+let g:molokai_original = 1
+colorscheme molokai " Set my preferred colorscheme.
 autocmd BufRead,BufNewFile * startinsert " When opening a file, start in insertmode.
 startinsert " When opening vim, start in insertmode
 " Map F1 to Ctrl-O to execute a single command in normal mode.
