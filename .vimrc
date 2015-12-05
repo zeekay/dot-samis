@@ -1,4 +1,3 @@
-" My .vimrc. As I'm just getting started with vim I expect this will undergo frequent changes.
 set nocompatible "Required for Vundle.
 let g:cua_mode = 3 "Enable all of the keybindings provided by cua-mode.vim
 " Vundle Configuration {{{
@@ -13,6 +12,14 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tomasr/molokai'
 " Provides CUA-style keybindings for vim.
 Plugin 'fabi1cazenave/cua-mode.vim'
+" Syntastic provides awesome syntax checking. We also need some checkers.
+Plugin 'scrooloose/syntastic'
+" Add support for the Crystal language to various Vim compoents.
+Plugin 'rhysd/vim-crystal'
+" Add an awesome status line.
+Plugin 'bling/vim-airline'
+" Awesome git wrapper.
+Plugin 'tpope/vim-fugitive'
 "End vundle configuration.
 call vundle#end()
 " }}}
@@ -22,7 +29,6 @@ filetype plugin indent on "Required for Vundle.
 syntax enable " Enable syntax highlighting.
 let g:molokai_original = 1
 colorscheme molokai " Set my preferred colorscheme.
-autocmd BufRead,BufNewFile * startinsert " When opening a file, start in insertmode.
 startinsert " When opening vim, start in insertmode
 " Map F1 to Ctrl-O to execute a single command in normal mode.
 imap <F1> <C-O>
@@ -39,6 +45,10 @@ set wildmenu " Visual autocompletion for the command menu.
 set showmatch " Highlight matching brackets and braces.
 set incsearch " Search incrementally.
 set hlsearch " Highlight found matches.
+if has('gui_running')
+        " Set the GUI font to the monospaced version of Pragmata Pro.
+        set guifont=Pragmata\ Pro\ Mono
+endif
 " Bind F2 to turn of search highlights.
 noremap <F2> <C-O>:nohlsearch<CR>
 " }}}
@@ -56,13 +66,12 @@ vnoremap <F9> zf
 " Autocmds {{{
 " A group of helpful per-language configuration settings & rebinding a key.
 augroup configgroup
-    autocmd!
     autocmd VimEnter * highlight clear SignColumn
     if has('gui_running')
             autocmd VimEnter * inoremap <C-F> <C-O>:promptrepl<CR>
     endif
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-                \:call <SID>StripTrailingWhitespaces()
+    autocmd VimEnter * imap <C-Right> <C-O>:bnext!<CR>
+    autocmd VimEnter * imap <C-Left> <C-O>:bprevious!<CR>
     autocmd FileType java setlocal noexpandtab
     autocmd FileType java setlocal list
     autocmd FileType java setlocal listchars=tab:+\ ,eol:-
@@ -72,6 +81,7 @@ augroup configgroup
     autocmd FileType php setlocal listchars=tab:+\ ,eol:-
     autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
+    autocmd FileType yaml setlocal tabstop=2
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
@@ -84,14 +94,33 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 "  }}}
-" Backup Settings {{{
+" Backup & Swap Settings {{{
 " Tweak the backup settings to they don't clutter up the current directory.
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+set swapfile
 " }}}
+" Syntastic Setings {{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" }}}
+" vim-airline settings {{{
+" Always show the status line.
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme='powerlineish'
+let g:airline#extensions#tabline#enabled = 1
+" }}}
+set confirm
 " Enable modelines for per-file configuration.
 set modeline
 set modelines=5
