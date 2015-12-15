@@ -35,3 +35,7 @@ source /usr/share/doc/pkgfile/command-not-found.bash
 function dotedit() {
   cd ~/dotfiles/$1
 }
+
+
+source ~/.xsh
+
