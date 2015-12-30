@@ -3,9 +3,11 @@
 # zeekay/dot-samis ellipsis package
 
 # The following hooks can be defined to customize behavior of your package:
-# pkg.install() {
-#     fs.link_files $PKG_PATH
-# }
+pkg.link() {
+    for dir in fs.list_directories; do
+        fs.link_files $dir
+    done
+}
 
 # pkg.push() {
 #     git.push
@@ -18,7 +20,7 @@
 # pkg.installed() {
 #     git.status
 # }
-#
+
 # pkg.status() {
 #     git.diffstat
 # }
